@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "1031969019599",
+    "firebase_url": "https://211.firebaseio.com",
+    "project_id": "project-4595746698222237897",
+    "storage_bucket": "project-4595746698222237897.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031969019599:android:3a8b8e2e44f58bea",
+        "android_client_info": {
+          "package_name": "org.kingsunitedway.kings_tulare211"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1031969019599-kic6j0k6d3q254tq6uq5ecthe94fuoep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3ndN0Fs83mIBg7B7nzrnqYvVfOpuTBVA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1031969019599:android:d7fa18e67c6943b5",
+        "android_client_info": {
+          "package_name": "org.kingsunitedway.testapp20160808"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1031969019599-kic6j0k6d3q254tq6uq5ecthe94fuoep.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3ndN0Fs83mIBg7B7nzrnqYvVfOpuTBVA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
