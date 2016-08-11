@@ -2,13 +2,10 @@ package org.kingsunitedway.testapp20160808;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -20,11 +17,7 @@ import org.kingsunitedway.testapp20160808.Controller.MainMenuGridViewAdapter;
 import org.kingsunitedway.testapp20160808.Model.mainMenuListItem;
 
 import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.Map;
-
-import butterknife.InjectView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private ArrayList<mainMenuListItem> mMainMenuListItems = new ArrayList<mainMenuListItem> ();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +36,16 @@ public class MainActivity extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://211.firebaseio.com/MainMenu/USCAKings-Tulare/");
         mDatabase.addValueEventListener(mainMenuListener);
 
+
+
+
+    }
+
+// Set up Grid View adapter
+    private void setUpGridViewAdapter(){
         //GridView set up
         GridView gridview = (GridView) findViewById(R.id.gridview);
         gridview.setAdapter(new MainMenuGridViewAdapter(this, mMainMenuListItems));
-
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -52,12 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
     }
-
-// Set up adapter
-
-
 
     ValueEventListener mainMenuListener = new ValueEventListener() {
         @Override
@@ -86,7 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+
+            setUpGridViewAdapter();
             Log.v(TAG, mMainMenuListItems.size() + "");
+
 
         }
 
