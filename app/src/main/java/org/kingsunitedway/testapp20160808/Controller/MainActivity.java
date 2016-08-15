@@ -1,7 +1,9 @@
-package org.kingsunitedway.testapp20160808;
+package org.kingsunitedway.testapp20160808.Controller;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,8 +15,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.kingsunitedway.testapp20160808.Controller.MainMenuGridViewAdapter;
 import org.kingsunitedway.testapp20160808.Model.mainMenuListItem;
+import org.kingsunitedway.testapp20160808.R;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private ArrayList<mainMenuListItem> mMainMenuListItems = new ArrayList<mainMenuListItem> ();
+    private MainMenuGridViewAdapter3 mMainMenuGridViewAdapter3;
 
 
 
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReferenceFromUrl("https://211.firebaseio.com/MainMenu/USCAKings-Tulare/");
         mDatabase.addValueEventListener(mainMenuListener);
+        initViews();
 
 
 
@@ -44,17 +48,18 @@ public class MainActivity extends AppCompatActivity {
 // Set up Grid View adapter
     private void setUpGridViewAdapter(){
         //GridView set up
-        GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new MainMenuGridViewAdapter(this, mMainMenuListItems));
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.v(TAG, "" + position);
-            }
-        });
+//        GridView gridview = (GridView) findViewById(R.id.gridview);
+//        gridview.setAdapter(new MainMenuGridViewAdapter(this, mMainMenuListItems));
+//        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.v(TAG, "" + position);
+//            }
+//        });
 
     }
 
+    //Firebase
     ValueEventListener mainMenuListener = new ValueEventListener() {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -83,7 +88,8 @@ public class MainActivity extends AppCompatActivity {
             }
 
 
-            setUpGridViewAdapter();
+            //setUpGridViewAdapter();
+            mMainMenuGridViewAdapter3.notifyDataSetChanged();
             Log.v(TAG, mMainMenuListItems.size() + "");
 
 
@@ -97,7 +103,19 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    //learn2crack implementation
+    private void initViews(){
 
+        RecyclerView recyclerView = (RecyclerView)findViewById(R.id.main_menu_recycler_view);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager (getApplicationContext(),2);
+        recyclerView.setLayoutManager(layoutManager);
+
+        //MainMenuGridViewAdapter3 adapter = new MainMenuGridViewAdapter3(getApplicationContext(), mMainMenuListItems);
+        mMainMenuGridViewAdapter3 = new MainMenuGridViewAdapter3(getApplicationContext(), mMainMenuListItems);
+        recyclerView.setAdapter(mMainMenuGridViewAdapter3);
+
+    }
 
 
 

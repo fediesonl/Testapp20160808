@@ -24,9 +24,13 @@ public class MainMenuGridViewAdapter extends BaseAdapter {
     private Context mContext;
     private ArrayList<mainMenuListItem> mMainMenuListItems;
 
+    public TextView mMainMenuText;
+    public ImageView mMainMenuImage;
+
     public MainMenuGridViewAdapter(Context c, ArrayList<mainMenuListItem> mainMenuListItems){
         mContext = c;
         mMainMenuListItems = mainMenuListItems;
+
     }
 
     @Override
@@ -46,11 +50,12 @@ public class MainMenuGridViewAdapter extends BaseAdapter {
     }
 
     // create a new ImageView for each item referenced by the Adapter
-
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View gridView;
+
+
 
 
         ///Image View
@@ -69,6 +74,13 @@ public class MainMenuGridViewAdapter extends BaseAdapter {
 //        return imageView;
         ///End Image View
 
+        ///Inflater
+
+
+
+        ///end Inflater
+
+
         ///Color
 
 
@@ -76,29 +88,29 @@ public class MainMenuGridViewAdapter extends BaseAdapter {
         ///Color
 
         ///Text View
-        TextView textView;
-        if(convertView == null){
-
-            gridView = new View(mContext);
-
-
-            // if it's not recycled, initialize some attributes
-            textView = new TextView(mContext);
-            textView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            textView.setPadding(8, 8, 8, 8);
-
-        }else{
-
-            textView = (TextView) convertView;
-
-        }
-
-        textView.setText(mMainMenuListItems.get(position).getMainMenuLabel());
-        return textView;
+//        TextView textView;
+//        if(convertView == null){
+//
+//            gridView = new View(mContext);
+//
+//
+//            // if it's not recycled, initialize some attributes
+//            textView = new TextView(mContext);
+//            textView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//            textView.setPadding(8, 8, 8, 8);
+//
+//        }else{
+//
+//            textView = (TextView) convertView;
+//
+//        }
+//
+//        textView.setText(mMainMenuListItems.get(position).getMainMenuLabel());
+//        return textView;
 
         ///End Text View
 
-
+        return convertView;
 
     }
 
