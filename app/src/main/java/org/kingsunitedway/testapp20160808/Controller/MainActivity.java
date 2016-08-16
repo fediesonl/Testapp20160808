@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import org.kingsunitedway.testapp20160808.Model.mainMenuListItem;
 import org.kingsunitedway.testapp20160808.R;
@@ -108,10 +109,10 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = (RecyclerView)findViewById(R.id.main_menu_recycler_view);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager (getApplicationContext(),2);
         recyclerView.setLayoutManager(layoutManager);
 
-        //MainMenuGridViewAdapter3 adapter = new MainMenuGridViewAdapter3(getApplicationContext(), mMainMenuListItems);
         mMainMenuGridViewAdapter3 = new MainMenuGridViewAdapter3(getApplicationContext(), mMainMenuListItems);
         recyclerView.setAdapter(mMainMenuGridViewAdapter3);
 
