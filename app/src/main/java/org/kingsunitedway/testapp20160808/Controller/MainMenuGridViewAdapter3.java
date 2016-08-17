@@ -19,7 +19,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
+
 
 import org.kingsunitedway.testapp20160808.Model.mainMenuListItem;
 import org.kingsunitedway.testapp20160808.R;
@@ -38,11 +38,13 @@ public class MainMenuGridViewAdapter3 extends RecyclerView.Adapter<MainMenuGridV
     private ArrayList<mainMenuListItem> mMainMenuListItems;
     private FirebaseStorage mFirebaseStorage = FirebaseStorage.getInstance();
     private StorageReference mStorageReference = mFirebaseStorage.getReferenceFromUrl("gs://project-4595746698222237897.appspot.com/");
+    private int mDevicePixelWidth;
 
-    public MainMenuGridViewAdapter3(Context context, ArrayList<mainMenuListItem> mainMenuListItems){
+    public MainMenuGridViewAdapter3(Context context, ArrayList<mainMenuListItem> mainMenuListItems, int devicePixelWidth){
 
         this.mMainMenuListItems = mainMenuListItems;
         this.mContext = context;
+        this.mDevicePixelWidth = devicePixelWidth;
 
     }
 
@@ -60,7 +62,9 @@ public class MainMenuGridViewAdapter3 extends RecyclerView.Adapter<MainMenuGridV
 
     @Override
     public int getItemCount() {
-        return mMainMenuListItems.size();
+
+            return mMainMenuListItems.size();
+
     }
 
 
@@ -78,9 +82,15 @@ public class MainMenuGridViewAdapter3 extends RecyclerView.Adapter<MainMenuGridV
             mMainMenuIcon = (ImageView) itemView.findViewById(R.id.main_menu_icon);
 
 
+
+
+
         }
 
         public void bindMainMenu(final mainMenuListItem mainMenuListItem){
+
+
+
 
             //Set Image
 
@@ -97,6 +107,8 @@ public class MainMenuGridViewAdapter3 extends RecyclerView.Adapter<MainMenuGridV
                         // Data for "mainmenu/" is returned, use this as needed
                         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                         mMainMenuIcon.setImageBitmap(bitmap);
+
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -108,6 +120,10 @@ public class MainMenuGridViewAdapter3 extends RecyclerView.Adapter<MainMenuGridV
             ///Download to memory
 
             mMainMenuText.setText(mainMenuListItem.getMainMenuLabel());
+            if (mDevicePixelWidth > 1500){
+                mMainMenuText.setTextSize(24);
+            }
+
             itemView.setBackgroundColor(Color.parseColor("#" + mainMenuListItem.getMainMenuHex()));
 
 
