@@ -7,17 +7,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
 
 import org.kingsunitedway.testapp20160808.Model.mainMenuListItem;
 import org.kingsunitedway.testapp20160808.R;
@@ -33,10 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
     private ArrayList<mainMenuListItem> mMainMenuListItems = new ArrayList<mainMenuListItem> ();
-    private MainMenuGridViewAdapter3 mMainMenuGridViewAdapter3;
+    private MainMenuGridViewAdapter mMainMenuGridViewAdapter;
     private int mDevicePixelWidth;
-
-
 
 
     @Override
@@ -70,12 +64,10 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onDataChange(DataSnapshot dataSnapshot) {
 
-
-            Log.v(TAG, "Erase arraylist");
+            //Clear for new array
             mMainMenuListItems.clear();
 
             ArrayList mainMenuSnapshot = (ArrayList) dataSnapshot.getValue();
-
 
             for (Object Item : mainMenuSnapshot) {
 
@@ -93,21 +85,23 @@ public class MainActivity extends AppCompatActivity {
 
                     mMainMenuListItems.add(mainMenuObject);
 
-                }
+                }//end if statement
 
 
-            }
+            }//end for loop
 
 
 
-
+            //Sort array by sort order
             Collections.sort(mMainMenuListItems, new Comparator<mainMenuListItem>() {
                 @Override
                 public int compare(mainMenuListItem order1, mainMenuListItem order2) {
                     return (order1.getMainMenuOrder().compareTo(order2.getMainMenuOrder()));
                 }
             });
-            mMainMenuGridViewAdapter3.notifyDataSetChanged();
+
+            //Update Adapter
+            mMainMenuGridViewAdapter.notifyDataSetChanged();
 
         }
 
@@ -120,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-    //learn2crack implementation
+    //RecyclerView GridLayoutManager - learn2crack implementation
     private void initViews(){
 
         int menuColumns;
@@ -139,8 +133,8 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager (getApplicationContext(),menuColumns);
         recyclerView.setLayoutManager(layoutManager);
 
-        mMainMenuGridViewAdapter3 = new MainMenuGridViewAdapter3(getApplicationContext(), mMainMenuListItems, mDevicePixelWidth);
-        recyclerView.setAdapter(mMainMenuGridViewAdapter3);
+        mMainMenuGridViewAdapter = new MainMenuGridViewAdapter(getApplicationContext(), mMainMenuListItems, mDevicePixelWidth);
+        recyclerView.setAdapter(mMainMenuGridViewAdapter);
 
     }
 

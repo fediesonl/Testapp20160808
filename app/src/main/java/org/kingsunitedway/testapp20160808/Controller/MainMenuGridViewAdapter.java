@@ -1,15 +1,23 @@
 package org.kingsunitedway.testapp20160808.Controller;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 
 import org.kingsunitedway.testapp20160808.Model.mainMenuListItem;
 import org.kingsunitedway.testapp20160808.R;
@@ -17,104 +25,100 @@ import org.kingsunitedway.testapp20160808.R;
 import java.util.ArrayList;
 
 /**
- * Created by kingsUnitedWay on 8/9/16.
+ * Created by kingsUnitedWay on 8/15/16.
  */
-public class MainMenuGridViewAdapter extends BaseAdapter {
+public class MainMenuGridViewAdapter extends RecyclerView.Adapter<MainMenuGridViewAdapter.MainMenuViewHolder> {
+
+    public static final String TAG = MainMenuGridViewAdapter.class.getSimpleName();
 
     private Context mContext;
     private ArrayList<mainMenuListItem> mMainMenuListItems;
+    private FirebaseStorage mFirebaseStorage = FirebaseStorage.getInstance();
+    private StorageReference mStorageReference = mFirebaseStorage.getReferenceFromUrl("gs://project-4595746698222237897.appspot.com/");
+    private int mDevicePixelWidth;
 
-    public TextView mMainMenuText;
-    public ImageView mMainMenuImage;
+    public MainMenuGridViewAdapter(Context context, ArrayList<mainMenuListItem> mainMenuListItems, int devicePixelWidth){
 
-    public MainMenuGridViewAdapter(Context c, ArrayList<mainMenuListItem> mainMenuListItems){
-        mContext = c;
-        mMainMenuListItems = mainMenuListItems;
+        this.mMainMenuListItems = mainMenuListItems;
+        this.mContext = context;
+        this.mDevicePixelWidth = devicePixelWidth;
 
+    }
+
+
+    @Override
+    public MainMenuViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_menu_grid_item, parent, false);
+        return new MainMenuViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        //Log.v("Adapter", String.valueOf(mMainMenuListItems.size()));
-        return mMainMenuListItems.size();
+    public void onBindViewHolder(MainMenuViewHolder holder, int position) {
+        holder.bindMainMenu(mMainMenuListItems.get(position));
     }
 
     @Override
-    public Object getItem(int position) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    // create a new ImageView for each item referenced by the Adapter
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        LayoutInflater inflater = (LayoutInflater)mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View gridView;
-
-
-
-
-        ///Image View
-//        ImageView imageView;
-////        if (convertView == null) {
-////            // if it's not recycled, initialize some attributes
-////            imageView = new ImageView(mContext);
-////            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
-////            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-////            imageView.setPadding(8, 8, 8, 8);
-////        } else {
-////            imageView = (ImageView) convertView;
-////        }
-////
-////        imageView.setBackgroundColor(Color.RED);
-//        return imageView;
-        ///End Image View
-
-        ///Inflater
-
-
-
-        ///end Inflater
-
-
-        ///Color
-
-
-
-        ///Color
-
-        ///Text View
-//        TextView textView;
-//        if(convertView == null){
-//
-//            gridView = new View(mContext);
-//
-//
-//            // if it's not recycled, initialize some attributes
-//            textView = new TextView(mContext);
-//            textView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//            textView.setPadding(8, 8, 8, 8);
-//
-//        }else{
-//
-//            textView = (TextView) convertView;
-//
-//        }
-//
-//        textView.setText(mMainMenuListItems.get(position).getMainMenuLabel());
-//        return textView;
-
-        ///End Text View
-
-        return convertView;
-
+    public int getItemCount() {
+            return mMainMenuListItems.size();
     }
 
 
+
+    public class MainMenuViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView mMainMenuText;
+        public ImageView mMainMenuIcon;
+
+
+        public MainMenuViewHolder(View itemView) {
+            super(itemView);
+            mMainMenuText = (TextView) itemView.findViewById(R.id.main_menu_label);
+            mMainMenuIcon = (ImageView) itemView.findViewById(R.id.main_menu_icon);
+        }
+
+        public void bindMainMenu(final mainMenuListItem mainMenuListItem){
+
+            //Set Image
+
+            ///Call firebase
+            StorageReference pathReference = mStorageReference.child("mainmenu/"+ mainMenuListItem.getMainMenuIcon());
+
+
+            ///Load images
+            ///Download to memory
+                final long ONE_MEGABYTE = 1024 * 1024;
+                pathReference.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        // Data for "mainmenu/" is returned, use this as needed
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        mMainMenuIcon.setImageBitmap(bitmap);
+
+
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                        Log.e(TAG, "icon not loaded from Firebase");
+                    }
+                });
+            ///Download to memory
+
+            //Set Text
+            mMainMenuText.setText(mainMenuListItem.getMainMenuLabel());
+            if (mDevicePixelWidth > 1500){
+                mMainMenuText.setTextSize(24);
+            }
+
+            //Set Color
+            itemView.setBackgroundColor(Color.parseColor("#" + mainMenuListItem.getMainMenuHex()));
+
+
+
+        }
+
+    }
 
 
 }
